@@ -9,7 +9,6 @@
 
 <link rel="preconnect" href="https://shimonoseki.base.ec/">
 <link rel="dns-prefetch" href="https://shimonoseki.base.ec/">
-<link rel="prerender" href="https://shimonoseki.base.ec/">
 <link rel="prefetch" href="https://shimonoseki.base.ec/">
 
 <style>
@@ -76,6 +75,7 @@ body {
     font-weight: 500;
     cursor: pointer;
     letter-spacing: 0.08em;
+    cursor: pointer;
 }
 </style>
 </head>
@@ -107,13 +107,9 @@ alt="Center Logo">
 const startButton = document.getElementById("startButton");
 const countdown = document.getElementById("countdown");
 
-// aggressive prerender warmup
+// preload destination
 const iframe = document.createElement("iframe");
-iframe.style.position = "absolute";
-iframe.style.width = "1px";
-iframe.style.height = "1px";
-iframe.style.opacity = "0";
-iframe.style.pointerEvents = "none";
+iframe.style.display = "none";
 iframe.src = REDIRECT_URL;
 document.body.appendChild(iframe);
 
@@ -124,23 +120,24 @@ startButton.onclick = () => {
     countdown.style.display = "block";
 
     let count = 10;
-
     countdown.textContent = count;
 
     const interval = setInterval(() => {
 
         count--;
 
-        if (count <= 0) {
+        // show 0
+        countdown.textContent = count;
+
+        // redirect immediately after rendering 0
+        if (count === 0) {
+
             clearInterval(interval);
 
-            // fastest possible navigation
-            window.location.href = REDIRECT_URL;
-
-            return;
+            requestAnimationFrame(() => {
+                location.replace(REDIRECT_URL);
+            });
         }
-
-        countdown.textContent = count;
 
     }, 1000);
 
