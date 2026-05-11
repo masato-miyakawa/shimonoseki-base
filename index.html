@@ -7,8 +7,10 @@
 
 <title>BASE Countdown</title>
 
-<link rel="preconnect" href="https://shimonoseki.base.ec">
-<link rel="dns-prefetch" href="https://shimonoseki.base.ec">
+<link rel="preconnect" href="https://shimonoseki.base.ec/">
+<link rel="dns-prefetch" href="https://shimonoseki.base.ec/">
+<link rel="prerender" href="https://shimonoseki.base.ec/">
+<link rel="prefetch" href="https://shimonoseki.base.ec/">
 
 <style>
 * {
@@ -100,16 +102,20 @@ alt="Center Logo">
 
 <script>
 
-const REDIRECT_URL = "https://shimonoseki.base.ec/";
-
+//const REDIRECT_URL = "https://shimonoseki.base.ec/";
+const REDIRECT_URL = "https://thebase.com/";
 const startButton = document.getElementById("startButton");
 const countdown = document.getElementById("countdown");
 
-// warm up
-fetch(REDIRECT_URL, {
-    mode: "no-cors",
-    cache: "force-cache"
-}).catch(() => {});
+// aggressive prerender warmup
+const iframe = document.createElement("iframe");
+iframe.style.position = "absolute";
+iframe.style.width = "1px";
+iframe.style.height = "1px";
+iframe.style.opacity = "0";
+iframe.style.pointerEvents = "none";
+iframe.src = REDIRECT_URL;
+document.body.appendChild(iframe);
 
 startButton.onclick = () => {
 
@@ -125,10 +131,12 @@ startButton.onclick = () => {
 
         count--;
 
-        // redirect BEFORE showing 0
-        if (count < 1) {
+        if (count <= 1) {
             clearInterval(interval);
-            location.replace(REDIRECT_URL);
+
+            // fastest possible navigation
+            window.location.href = REDIRECT_URL;
+
             return;
         }
 
