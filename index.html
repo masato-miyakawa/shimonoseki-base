@@ -103,7 +103,7 @@ alt="Center Logo">
 <script>
 
 //const REDIRECT_URL = "https://shimonoseki.base.ec/";
-const REDIRECT_URL = "https://thebase.com/";
+    const REDIRECT_URL = "https://thebase.com/";
 const startButton = document.getElementById("startButton");
 const countdown = document.getElementById("countdown");
 
@@ -131,7 +131,7 @@ startButton.onclick = () => {
 
         count--;
 
-        if (count <= 1) {
+        if (count <= 0) {
             clearInterval(interval);
 
             // fastest possible navigation
