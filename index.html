@@ -146,12 +146,30 @@ startButton.onclick = async () => {
 
             clearInterval(interval);
 
-            bgm.pause();
-            bgm.currentTime = 0;
+            let volume = 1.0;
 
-            requestAnimationFrame(() => {
-                location.replace(REDIRECT_URL);
-            });
+            const fadeOut = setInterval(() => {
+
+                volume -= 0.08;
+
+                if (volume <= 0) {
+
+                    clearInterval(fadeOut);
+
+                    bgm.pause();
+                    bgm.currentTime = 0;
+                    bgm.volume = 1;
+
+                    requestAnimationFrame(() => {
+                        location.replace(REDIRECT_URL);
+                    });
+
+                    return;
+                }
+
+                bgm.volume = volume;
+
+            }, 80);
         }
 
     }, 1000);
